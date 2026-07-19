@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = pd.read_csv('healthcare-dataset-stroke-data-selected-columns.csv')
+df = pd.read_csv('ML-02/healthcare-dataset-stroke-data-selected-columns.csv')
 
 sns.set_theme(style="whitegrid")
 plt.figure(figsize=(10, 6))
