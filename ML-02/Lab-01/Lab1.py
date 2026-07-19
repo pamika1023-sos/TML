@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv('healthcare-dataset-stroke-data-selected-columns.csv')
+df = pd.read_csv('ML-02/healthcare-dataset-stroke-data-selected-columns.csv')
 print("--- 1. Load Dataset (5 แถวแรก) ---")
 print(df.head())
 print("\n" + "="*50 + "\n")
