@@ -6,7 +6,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 
 def main():
-
     print("--- 1. Loading and Preprocessing Data ---")
     try:
         df = pd.read_csv('healthcare-dataset-stroke-data-selected-columns.csv')
@@ -19,9 +18,9 @@ def main():
     df['bmi'] = df['bmi'].fillna(df['bmi'].mean())
 
     categorical_cols = ['gender', 'ever_married', 'work_type', 'Residence_type']
-    df_encoded = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
+    # เพิ่ม dtype=int เพื่อบังคับให้แปลงเป็น 0 และ 1 แก้ปัญหาข้อมูลประเภท Boolean
+    df_encoded = pd.get_dummies(df, columns=categorical_cols, drop_first=True, dtype=int)
 
-    # กำหนดค่า Target (Y) คือ 'age' ที่ต้องการทำนาย
     y = df_encoded['age']
 
     print("\n--- 2. Part 1: Simple Linear Regression ---")
@@ -31,7 +30,6 @@ def main():
 
     X_train_s, X_test_s, y_train_s, y_test_s = train_test_split(X_simple, y, test_size=0.2, random_state=42)
 
-    # แก้ไขจาก simplo_model เป็น simple_model เรียบร้อยครับ
     simple_model = LinearRegression()
     simple_model.fit(X_train_s, y_train_s)
 
@@ -64,10 +62,11 @@ def main():
     print("\n--- 4. Generating Plots ---")
     plt.figure(figsize=(14, 5))
 
-    # กราฟสำหรับ Simple Linear Regression
     plt.subplot(1, 2, 1)
-    plt.scatter(X_test_s, y_test_s, color='gray', alpha=0.3, label='Actual Data')
-    x_line = np.linspace(X_test_s.min(), X_test_s.max(), 100).reshape(-1, 1)
+    plt.scatter(X_test_s['bmi'], y_test_s, color='gray', alpha=0.3, label='Actual Data')
+    
+    # เจาะจงเลือกคอลัมน์ 'bmi' เพื่อดึงค่า min/max ที่เป็นตัวเลขออกมาตรงๆ
+    x_line = np.linspace(X_test_s['bmi'].min(), X_test_s['bmi'].max(), 100).reshape(-1, 1)
     y_line = simple_model.predict(x_line)
     plt.plot(x_line, y_line, color='red', linewidth=2, label='Regression Line')
     plt.title(f'Simple Linear Regression\n(R² = {r2_s:.2f})')
@@ -75,7 +74,6 @@ def main():
     plt.ylabel('Age')
     plt.legend()
 
-    # กราฟสำหรับ Multiple Linear Regression
     plt.subplot(1, 2, 2)
     plt.scatter(y_test_m, y_pred_m, color='blue', alpha=0.3)
     plt.plot([y_test_m.min(), y_test_m.max()], [y_test_m.min(), y_test_m.max()], color='red', linestyle='--', linewidth=2)
