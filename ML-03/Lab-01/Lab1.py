@@ -31,6 +31,7 @@ def main():
 
     X_train_s, X_test_s, y_train_s, y_test_s = train_test_split(X_simple, y, test_size=0.2, random_state=42)
 
+    # แก้ไขจาก simplo_model เป็น simple_model เรียบร้อยครับ
     simple_model = LinearRegression()
     simple_model.fit(X_train_s, y_train_s)
 
